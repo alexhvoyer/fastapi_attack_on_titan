@@ -1,6 +1,9 @@
 from pydantic import BaseModel, Field
 from enum import Enum
 
+from ..schemas.titan import Titan
+
+
 class StatusChoises(Enum):
     ALIVE = 'alive'
     DECEASED = 'deceased'
@@ -31,11 +34,9 @@ class CharacterBase(BaseModel):
             'example': character_example
         }
 
-class CharacterOut(BaseModel):
-    first_name: str;
-
 class Character(CharacterBase):
     id: int;
+    titan: Titan | None;
 
     class Config:
-        orm_mode = True;
+        orm_mode = True
