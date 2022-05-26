@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Enum
-from .schemas import StatusChoises
-from .database import Base
+from ..schemas.character import StatusChoises
+from ..database import Base
 
 class Character(Base):
     __tablename__ = "characters"
