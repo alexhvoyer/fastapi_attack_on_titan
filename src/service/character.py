@@ -9,7 +9,7 @@ def get_character_list(db: Session, skip: int = 0, limit: int = 20, name: str | 
     filters = []
 
     if name is not None:
-        filters.append(Character.first_name.like(search))
+        filters.append(Character.full_name.like(search))
 
     return db.query(Character).filter(and_(*filters)).offset(skip).limit(limit).all();
 
