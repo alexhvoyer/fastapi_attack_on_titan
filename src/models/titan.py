@@ -12,6 +12,6 @@ class Titan(Base):
     other_names = Column(String)
     abilities = Column(String)
     allegiance = Column(Enum(AllegianceChoises), default=AllegianceChoises.ELDIA)
-    owner_id = Column(Integer, ForeignKey('characters.id'))
+    owner_id = Column(Integer, ForeignKey("characters.id"))
 
     owner = relationship("Character", uselist=False, foreign_keys=[owner_id], back_populates="titan")

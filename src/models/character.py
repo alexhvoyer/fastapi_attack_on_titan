@@ -17,4 +17,4 @@ class Character(Base):
     residence = Column(String)
     status = Column(Enum(StatusChoises))
 
-    titan = relationship("Titan", back_populates="owner")
+    titan = relationship("Titan", back_populates="owner", uselist=False)

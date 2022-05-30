@@ -36,7 +36,7 @@ class CharacterBase(BaseModel):
 
 class Character(CharacterBase):
     id: int;
-    titan: Titan | None;
+    titan: Titan | None = None;
 
     class Config:
         orm_mode = True

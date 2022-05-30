@@ -14,4 +14,4 @@ def create_character(db: Session, character: CharacterBase):
     return db_character;
 
 def get_character_by_id(db: Session, id: int):
-    return db.query(Character).filter(Character.id == id).join(Character.titan).first()
+    return db.query(Character).filter(Character.id == id).first()
