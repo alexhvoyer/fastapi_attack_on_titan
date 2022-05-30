@@ -1,10 +1,17 @@
+from sqlalchemy import and_
 from sqlalchemy.orm import Session
 
 from ..models.character import Character
 from ..schemas.character import CharacterBase
 
-def get_characters(db: Session, skip: int = 0, limit: int = 20):
-    return db.query(Character).offset(skip).limit(limit).all();
+def get_character_list(db: Session, skip: int = 0, limit: int = 20, name: str | None = None):
+    search = "%{}%".format(name)
+    filters = []
+
+    if name is not None:
+        filters.append(Character.first_name.like(search))
+
+    return db.query(Character).filter(and_(*filters)).offset(skip).limit(limit).all();
 
 def create_character(db: Session, character: CharacterBase):
     db_character = Character(**character.dict());
@@ -14,4 +21,13 @@ def create_character(db: Session, character: CharacterBase):
     return db_character;
 
 def get_character_by_id(db: Session, id: int):
-    return db.query(Character).filter(Character.id == id).first()
+    return db.query(Character).filter(id=id).first();
+
+def update_character(db: Session, id: int, update_data: CharacterBase):
+    db_char = db.query(Character).filter_by(id=id);
+    db_char.update(update_data.dict());
+    db.commit();
+
+def delete_character(db: Session, id: int):
+    db.query(Character).filter_by(id=id).delete();
+    db.commit();
