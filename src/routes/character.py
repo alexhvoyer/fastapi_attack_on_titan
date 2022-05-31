@@ -1,6 +1,7 @@
-from http.client import HTTPException
-from fastapi import APIRouter, Query, status, Depends, Body
+from fastapi import APIRouter, Query, status, Depends, Body, HTTPException
 from sqlalchemy.orm import Session
+
+from src.utils.errors import create_404_error
 
 from ..service import character as service
 from ..schemas.character import CharacterBase, Character, character_example
@@ -12,6 +13,7 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
+exception_404 = create_404_error(detail="Character not found")
 
 @router.get('/')
 def get_characters(
@@ -31,13 +33,16 @@ def create_character(character: CharacterBase = Body(..., example=character_exam
 
 @router.get('/{id}', response_model=Character)
 def get_character_by_id(id: str, db: Session = Depends(get_db)):
-    return service.get_character_by_id(db, id)
+    character_db = service.get_character_by_id(db, id);
+    if character_db is None:
+        raise exception_404
+    return character_db
 
 @router.put('/{id}', status_code=status.HTTP_204_NO_CONTENT)
 def update_titan(id: str, data: Character, db: Session = Depends(get_db)):
     db_character = service.get_character_by_id(db, id)
     if db_character is None:
-        raise HTTPException(status_code=404, detail="Character not found")
+        raise exception_404
     service.update_character(db, id, data)
 
 
