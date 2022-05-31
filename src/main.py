@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 
 from .models.character import Base
 from . import database
@@ -16,3 +17,5 @@ async def root():
 
 app.include_router(character.router)
 app.include_router(titan.router)
+
+app.mount('/static', StaticFiles(directory="src/static"), name="static")

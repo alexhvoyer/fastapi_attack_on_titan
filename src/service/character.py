@@ -21,7 +21,7 @@ def create_character(db: Session, character: CharacterBase):
     return db_character;
 
 def get_character_by_id(db: Session, id: int):
-    return db.query(Character).filter(id=id).first();
+    return db.query(Character).filter_by(id=id).first();
 
 def update_character(db: Session, id: int, update_data: CharacterBase):
     db_char = db.query(Character).filter_by(id=id);
